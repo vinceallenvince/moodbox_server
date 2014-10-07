@@ -1,0 +1,17 @@
+{
+  "name": "moodboxserver",
+  "version": "0.1.0",
+  "description": "",
+  "repository": "",
+  "main": "main.js",
+  "scripts": {
+
+  },
+  "author": "Vince Allen",
+  "license": "ISC",
+  "dependencies": {
+    "spotify-web-api-node": "~1.0.1",
+    "express": "~4.9.5",
+    "request": "~2.44.0"
+  }
+}
