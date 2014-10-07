@@ -20,6 +20,17 @@ var spotifyApi = new SpotifyWebApi({
 
 var userId;
 
+var targetPlaylists = {
+  list: ['moodbox-ch0', 'moodbox-ch1', 'moodbox-ch2', 'moodbox-ch3', 'moodbox-ch4'],
+  lookup: {
+    'moodbox-ch0': false,
+    'moodbox-ch1': false,
+    'moodbox-ch2': false,
+    'moodbox-ch3': false,
+    'moodbox-ch4': false
+  }
+};
+
 // Create the authorization URL
 var authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
 
@@ -47,19 +58,11 @@ app.get('/shiftplaylist', function(req, res) {
 
   res.render('shiftplaylist', {pageTitle: 'Mood Box shiftplaylist'});
 
-  spotifyApi.removeTracksFromPlaylist(userId, '1FGS9cQJhVBx92yLM5vqFu',
+  /*spotifyApi.removeTracksFromPlaylist(userId, '1FGS9cQJhVBx92yLM5vqFu',
     [{
         'uri' : 'spotify:track:0bsSYZR6pr2NS2dbBZTw71'
-    }]);
+    }]);*/
 
-});
-
-app.get('/thumbup', function(req, res) {
-  console.log('thumbup');
-});
-
-app.get('/thumbup', function(req, res) {
-  console.log('thumbup');
 });
 
 server.listen(port);
@@ -81,17 +84,56 @@ function getAccessToken(code) {
     })
     .then(function(data) {
       userId = data.id;
-      return spotifyApi.getUserPlaylists(userId); // Get the user's playlists
+      return spotifyApi.getUserPlaylists(userId, {limit: 50}); // Get the user's playlists
     })
     .then(function(data) {
+      var playlistName;
       for (var i = 0, max = data.items.length; i < max; i++) { // loop thru the playlists
-        if (data.items[i].name === 'moodbox-ch1') {
-
-
+        playlistName = data.items[i].name;
+        if (
+          playlistName == 'moodbox-ch0' ||
+          playlistName == 'moodbox-ch1' ||
+          playlistName == 'moodbox-ch2' ||
+          playlistName == 'moodbox-ch3' ||
+          playlistName == 'moodbox-ch4'
+          ) {
+          targetPlaylists.lookup[playlistName] = data.items[i].id;
         }
       }
+      console.log(targetPlaylists.lookup);
+
+      // uncomment to create target playlists that do not exist
+      /*for (var j = 0, max = targetPlaylists.list.length; j < max; j++) {
+        var playlistName = targetPlaylists.list[j];
+        if (!targetPlaylists.lookup[playlistName]) { // create the target playlists
+          spotifyApi.createPlaylist(userId, playlistName, {'public': true})
+          .then(function(data) {
+            targetPlaylists.lookup[playlistName] = data.id;
+            console.log('Created playlist %s: %s', data.name, data.id);
+          }, function(err) {
+            console.log('Something went wrong!', err);
+          });
+        }
+      }*/
+
+      buildChannels();
+
     });
 }
 
+var EventEmitter = require('events').EventEmitter;
+var emitter = new EventEmitter();
+var Channel = require('./src/channel').Channel;
+var moods = require('./src/moods').moods;
+var channels = [];
+var serviceStarted;
 
-
+function buildChannels() {
+  if (!serviceStarted) {
+    for (var i = 0; i < moods.length; i++) {
+      channels.push(new Channel(spotifyApi, userId, targetPlaylists, emitter, moods[i].name, i));
+      channels[channels.length - 1].init();
+    }
+  }
+  serviceStarted = true;
+}

@@ -4,14 +4,15 @@
   "description": "",
   "repository": "",
   "main": "main.js",
-  "scripts": {
-
-  },
+  "scripts": {},
   "author": "Vince Allen",
   "license": "ISC",
   "dependencies": {
     "spotify-web-api-node": "~1.0.1",
     "express": "~4.9.5",
-    "request": "~2.44.0"
+    "request": "~2.44.0",
+    "jade": "~1.7.0",
+    "echojs": "~0.1.4",
+    "q": "~1.0.1"
   }
 }

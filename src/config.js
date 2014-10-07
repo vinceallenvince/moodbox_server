@@ -1,0 +1,7 @@
+var config = {
+  EN_API_KEY: 'UQZFWAPECBUEJSNX6',
+  SPOTIFY_API_CLIENT_ID: '60b922a4e6ce4c3e8ed9fd6b3cc86c5f',
+  SPOTIFY_API_CLIENT_SECRET: '1a4238e8c93f4fe7a5a41d7c687414c1'
+}
+
+exports.config = config;
