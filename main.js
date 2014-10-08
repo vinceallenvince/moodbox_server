@@ -1,3 +1,4 @@
+var config = require('src/config').config;
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
@@ -7,8 +8,8 @@ var SpotifyWebApi = require('spotify-web-api-node');
 
 var scopes = ['playlist-modify-public'],
     redirectUri = 'http://localhost:8888/callback', // make sure this uri is whitelisted; https://developer.spotify.com/my-applications
-    clientId = 'ac28b81dffde45839c7b00ca2fc19494',
-    clientSecret = 'd441fedb47704a4ba822c2370d2a472a', // IMPORTANT: Add your client secret.
+    clientId = config.SPOTIFY_API_CLIENT_ID,
+    clientSecret = config.SPOTIFY_API_CLIENT_SECRET, // IMPORTANT: Add your client secret.
     state = 'some-state-of-my-choice',
     port = 8888;
 
@@ -17,7 +18,7 @@ var spotifyApi = new SpotifyWebApi({
   clientId : clientId,
   clientSecret : clientSecret
 });
-
+console.log(config);
 var userId;
 
 var targetPlaylists = {
@@ -30,6 +31,8 @@ var targetPlaylists = {
     'moodbox-ch4': false
   }
 };
+
+var snapshotId;
 
 // Create the authorization URL
 var authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
@@ -54,14 +57,30 @@ app.get('/callback', function(req, res) {
   getAccessToken(code);
 });
 
+/**
+ * Player should pass a uri and playlist index
+ * http://localhost:8888/shiftplaylist?uri=3MPqUOBndj5unD1dyvSO51&index=2
+ */
 app.get('/shiftplaylist', function(req, res) {
 
-  res.render('shiftplaylist', {pageTitle: 'Mood Box shiftplaylist'});
+  var uri = req.query.uri;
+  var index = req.query.index;
+  var playlistId = targetPlaylists.lookup[targetPlaylists.list[index]];
 
-  /*spotifyApi.removeTracksFromPlaylist(userId, '1FGS9cQJhVBx92yLM5vqFu',
-    [{
-        'uri' : 'spotify:track:0bsSYZR6pr2NS2dbBZTw71'
-    }]);*/
+  if (uri.search('spotify:track:') == -1) {
+    uri = 'spotify:track:' + uri;
+  }
+
+  spotifyApi.removeTracksFromPlaylist(userId, playlistId, [{'uri' : uri}])
+    .then(function(response) {
+      snapshotId = response.snapshot_id;
+    })
+    .catch(function(err) {
+      console.log(err);
+      console.log('Something went wrong!');
+    });
+
+  res.render('shiftplaylist', {pageTitle: 'Mood Box shiftplaylist'});
 
 });
 
