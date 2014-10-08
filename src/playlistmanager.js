@@ -9,7 +9,7 @@ var echo = echojs({
 });
 
 var TOTAL_ARTIST_RESULTS = 5;
-var TOTAL_PLAYLIST_RESULTS = 12; // TODO: Add to config file.
+var TOTAL_PLAYLIST_RESULTS = 2; // TODO: Add to config file.
 
 /**
  * Creates a new PlaylistManager.
@@ -24,7 +24,7 @@ function PlaylistManager() {
  * Creates a dynamic playlist session from the EN playlist endpoint.
  */
 PlaylistManager.prototype.createPlaylist = function(artists) {
-console.log('!!!!!!!!!!');
+
   if (!artists) {
     this.handleError(new Error('PlaylistManager: requires \'artists\' parameter.'));
   }

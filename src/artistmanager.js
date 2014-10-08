@@ -30,7 +30,7 @@ function ArtistManager(genre, mood) {
  * Requests artists from the EN artist search endpoint.
  */
 ArtistManager.prototype.getArtists = function() {
-  console.log('hi!');
+
   var deferred = Q.defer();
 
   echo('artist/search').get({
@@ -49,7 +49,6 @@ ArtistManager.prototype.getArtists = function() {
  * @param  {Object} json Data returned from the request.
  */
 ArtistManager.prototype.handleGetArtists = function(deferred, error, json) {
-
   if (error) {
     this.handleError(deferred, new Error(error));
     return;
