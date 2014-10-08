@@ -70,6 +70,7 @@ app.get('/shiftplaylist', function(req, res) {
   spotifyApi.removeTracksFromPlaylist(userId, playlistId, [{'uri' : uri}])
     .then(function(response) {
       snapshotId = response.snapshot_id;
+      console.log('Removed track %s from %s.', uri, targetPlaylists.list[channel - 1]);
     })
     .catch(function(err) {
       console.log(err);
