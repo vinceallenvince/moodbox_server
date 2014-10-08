@@ -34,8 +34,8 @@ Channel.prototype.init = function() {
   this.trackMgr = new TrackManager(this.spotifyApi, this.userId, this.targetPlaylists, this.index);
 
   Q.fcall(this.artistMgr.getArtists.bind(this.artistMgr)).
-  then(this.playlistMgr.createPlaylist.bind(this.playlistMgr)).
-  then(this.trackMgr.addTracks.bind(this.trackMgr)).
+  //then(this.playlistMgr.createPlaylist.bind(this.playlistMgr)).
+  //then(this.trackMgr.addTracks.bind(this.trackMgr)).
   fail(this.fail.bind(this)).
   done();
 };

@@ -136,7 +136,7 @@ function getAccessToken(code) {
         }
       }*/
 
-      //buildChannels();
+      buildChannels();
 
     });
 }
