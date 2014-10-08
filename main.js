@@ -61,7 +61,7 @@ app.get('/shiftplaylist', function(req, res) {
 
   var uri = req.query.uri;
   var index = req.query.index;
-  var playlistId = targetPlaylists.lookup[targetPlaylists.list[index]];
+  var playlistId = targetPlaylists.lookup[targetPlaylists.list[index - 1]];
 
   if (uri.search('spotify:track:') == -1) {
     uri = 'spotify:track:' + uri;
