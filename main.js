@@ -99,7 +99,7 @@ app.get('/pushplaylist', function(req, res) {
   var channelnum = req.query.num; // channel from moodbox-ch1 thru 5
   var playlistId = targetPlaylists.lookup[targetPlaylists.list[channelnum - 1]];
 
-  console.log(channels[channelnum - 1]);
+  channels[channelnum - 1].update()
 
   /*spotifyApi.removeTracksFromPlaylist(userId, playlistId, [{'uri' : uri}])
     .then(function(response) {

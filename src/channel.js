@@ -39,6 +39,14 @@ Channel.prototype.init = function() {
   done();
 };
 
+Channel.prototype.update = function() {
+  Q.fcall(this.artistMgr.getArtists.bind(this.artistMgr)).
+  then(this.playlistMgr.createPlaylist.bind(this.playlistMgr)).
+  then(this.trackMgr.addTracks.bind(this.trackMgr)).
+  fail(this.fail.bind(this)).
+  done();
+};
+
 Channel.ready = false;
 
 Channel.prototype.fail = function(error) {
