@@ -43,6 +43,7 @@ Channel.prototype.init = function() {
 Channel.ready = false;
 
 Channel.prototype.fail = function(error) {
+  console.log('Channel.prototype.fail');
   console.error(error);
   this.fetching = false;
 };
