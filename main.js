@@ -35,6 +35,15 @@ var authorizeURL = spotifyApi.createAuthorizeURL(scopes, state);
 
 //
 
+var EventEmitter = require('events').EventEmitter;
+var emitter = new EventEmitter();
+var Channel = require('./src/channel').Channel;
+var moods = require('./src/moods').moods;
+var channels = [];
+var serviceStarted;
+
+//
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
@@ -55,13 +64,13 @@ app.get('/callback', function(req, res) {
 
 /**
  * Player should pass a uri and playlist channel
- * http://localhost:8888/shiftplaylist?uri=3MPqUOBndj5unD1dyvSO51&channel=2
+ * http://localhost:8888/shiftplaylist?uri=3MPqUOBndj5unD1dyvSO51&num=2
  */
 app.get('/shiftplaylist', function(req, res) {
 
   var uri = req.query.uri;
-  var channel = req.query.channel; // channel from moodbox-ch1 thru 5
-  var playlistId = targetPlaylists.lookup[targetPlaylists.list[channel - 1]];
+  var channelnum = req.query.num; // channel from moodbox-ch1 thru 5
+  var playlistId = targetPlaylists.lookup[targetPlaylists.list[channelnum - 1]];
 
   if (uri.search('spotify:track:') == -1) {
     uri = 'spotify:track:' + uri;
@@ -70,7 +79,7 @@ app.get('/shiftplaylist', function(req, res) {
   spotifyApi.removeTracksFromPlaylist(userId, playlistId, [{'uri' : uri}])
     .then(function(response) {
       snapshotId = response.snapshot_id;
-      console.log('Removed track %s from %s.', uri, targetPlaylists.list[channel - 1]);
+      console.log('Removed track %s from %s.', uri, targetPlaylists.list[channelnum - 1]);
     })
     .catch(function(err) {
       console.log(err);
@@ -78,6 +87,31 @@ app.get('/shiftplaylist', function(req, res) {
     });
 
   res.render('shiftplaylist', {pageTitle: 'Mood Box shiftplaylist'});
+
+});
+
+/**
+ * Player should pass a uri and playlist channel
+ * http://localhost:8888/pushplaylist?num=2
+ */
+app.get('/pushplaylist', function(req, res) {
+
+  var channelnum = req.query.num; // channel from moodbox-ch1 thru 5
+  var playlistId = targetPlaylists.lookup[targetPlaylists.list[channelnum - 1]];
+
+  console.log(channels[channelnum - 1]);
+
+  /*spotifyApi.removeTracksFromPlaylist(userId, playlistId, [{'uri' : uri}])
+    .then(function(response) {
+      snapshotId = response.snapshot_id;
+      console.log('Removed track %s from %s.', uri, targetPlaylists.list[channel - 1]);
+    })
+    .catch(function(err) {
+      console.log(err);
+      console.log('Something went wrong!');
+    });*/
+
+  res.render('pushplaylist', {pageTitle: 'Mood Box pushplaylist'});
 
 });
 
@@ -141,13 +175,6 @@ function getAccessToken(code) {
 
     });
 }
-
-var EventEmitter = require('events').EventEmitter;
-var emitter = new EventEmitter();
-var Channel = require('./src/channel').Channel;
-var moods = require('./src/moods').moods;
-var channels = [];
-var serviceStarted;
 
 function buildChannels() {
   if (!serviceStarted) {
