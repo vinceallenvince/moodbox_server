@@ -19,7 +19,7 @@ function TrackManager(spotifyApi, userId, targetPlaylists, index) {
 
 TrackManager.prototype.addTracks = function(data) {
   var tracks = [];
-  console.log('data.songs.length: %d', data.songs.length);
+  console.log(data.songs.length);
   for (var i = 0, max = data.songs.length; i < max; i++) {
     if (data.songs[i].tracks[0]) {
       tracks.push(data.songs[i].tracks[0].foreign_id);
