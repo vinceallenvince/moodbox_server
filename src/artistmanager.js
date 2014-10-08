@@ -49,6 +49,7 @@ ArtistManager.prototype.getArtists = function() {
  * @param  {Object} json Data returned from the request.
  */
 ArtistManager.prototype.handleGetArtists = function(deferred, error, json) {
+  console.log(json);
   if (error) {
     this.handleError(deferred, new Error(error));
     return;

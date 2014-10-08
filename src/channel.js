@@ -14,9 +14,9 @@ var ARTIST_GENRE = 'blues';
  */
 function Channel(spotifyApi, userId, targetPlaylists, emitter, mood, index) {
 
-  if (!emitter || !mood || typeof index === 'undefined') {
+  /*if (!emitter || !mood || typeof index === 'undefined') {
     this.fail(new Error('Channel: requires \'emitter\', \'mood\' and \'index\' parameters.'));
-  }
+  }*/
 
   this.spotifyApi = spotifyApi;
   this.userId = userId;
@@ -30,12 +30,12 @@ function Channel(spotifyApi, userId, targetPlaylists, emitter, mood, index) {
 Channel.prototype.init = function() {
 
   this.artistMgr = new ArtistManager(ARTIST_GENRE, this.mood);
-  this.playlistMgr = new PlaylistManager();
-  this.trackMgr = new TrackManager(this.spotifyApi, this.userId, this.targetPlaylists, this.index);
+  //this.playlistMgr = new PlaylistManager();
+  //this.trackMgr = new TrackManager(this.spotifyApi, this.userId, this.targetPlaylists, this.index);
 
   Q.fcall(this.artistMgr.getArtists.bind(this.artistMgr)).
-  then(this.playlistMgr.createPlaylist.bind(this.playlistMgr)).
-  then(this.trackMgr.addTracks.bind(this.trackMgr)).
+  //then(this.playlistMgr.createPlaylist.bind(this.playlistMgr)).
+  //then(this.trackMgr.addTracks.bind(this.trackMgr)).
   fail(this.fail.bind(this)).
   done();
 };
