@@ -97,9 +97,12 @@ app.get('/shiftplaylist', function(req, res) {
 app.get('/pushplaylist', function(req, res) {
 
   var channelnum = req.query.num; // channel from moodbox-ch1 thru 5
-  channels[channelnum - 1].update()
 
-  res.render('pushplaylist', {pageTitle: 'Mood Box pushplaylist'});
+  channels[channelnum - 1].update().
+  done(function() {
+    res.render('pushplaylist', {pageTitle: 'Mood Box pushplaylist'});
+  });
+
 });
 
 server.listen(port);

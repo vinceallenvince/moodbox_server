@@ -40,11 +40,18 @@ Channel.prototype.init = function() {
 };
 
 Channel.prototype.update = function() {
+
+  var deferred = Q.defer();
+
   Q.fcall(this.artistMgr.getArtists.bind(this.artistMgr)).
   then(this.playlistMgr.createPlaylist.bind(this.playlistMgr)).
   then(this.trackMgr.addTracks.bind(this.trackMgr)).
   fail(this.fail.bind(this)).
-  done();
+  done(function() {
+    deferred.resolve();
+  });
+
+  return deferred.promise;
 };
 
 Channel.ready = false;
