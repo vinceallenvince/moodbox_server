@@ -13,7 +13,7 @@ var ARTIST_GENRE = 'blues';
  * @param {string} mood    A an artist descriptor.
  */
 function Channel(spotifyApi, userId, targetPlaylists, emitter, mood, index) {
-;
+
   if (!emitter || !mood || typeof index === 'undefined') {
     this.fail(new Error('Channel: requires \'emitter\', \'mood\' and \'index\' parameters.'));
   }
