@@ -7,7 +7,7 @@ var request = require('request');
 var SpotifyWebApi = require('spotify-web-api-node');
 
 var scopes = ['playlist-modify-public'],
-    redirectUri = 'http://localhost:8888/callback', // make sure this uri is whitelisted; https://developer.spotify.com/my-applications
+    redirectUri = config.REDIRECT_URI, // make sure this uri is whitelisted; https://developer.spotify.com/my-applications
     clientId = config.SPOTIFY_API_CLIENT_ID,
     clientSecret = config.SPOTIFY_API_CLIENT_SECRET, // IMPORTANT: Add your client secret.
     state = 'some-state-of-my-choice',
@@ -18,7 +18,7 @@ var spotifyApi = new SpotifyWebApi({
   clientId : clientId,
   clientSecret : clientSecret
 });
-console.log(config);
+
 var userId;
 
 var targetPlaylists = {
