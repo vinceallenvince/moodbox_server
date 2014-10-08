@@ -24,7 +24,7 @@ function PlaylistManager() {
  * Creates a dynamic playlist session from the EN playlist endpoint.
  */
 PlaylistManager.prototype.createPlaylist = function(artists) {
-
+console.log('!!!!!!!!!!');
   if (!artists) {
     this.handleError(new Error('PlaylistManager: requires \'artists\' parameter.'));
   }
