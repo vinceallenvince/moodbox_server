@@ -17,7 +17,7 @@ function Channel(spotifyApi, userId, targetPlaylists, emitter, mood, index) {
   /*if (!emitter || !mood || typeof index === 'undefined') {
     this.fail(new Error('Channel: requires \'emitter\', \'mood\' and \'index\' parameters.'));
   }*/
-
+console.log(arguments);
   this.spotifyApi = spotifyApi;
   this.userId = userId;
   this.targetPlaylists = targetPlaylists;
