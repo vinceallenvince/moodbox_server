@@ -152,6 +152,7 @@ var serviceStarted;
 function buildChannels() {
   if (!serviceStarted) {
     for (var i = 0; i < moods.length; i++) {
+      console.log(i);
       channels.push(new Channel(spotifyApi, userId, targetPlaylists, emitter, moods[i].name, index));
       channels[channels.length - 1].init();
     }
