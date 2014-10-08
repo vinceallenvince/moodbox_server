@@ -21,17 +21,13 @@ var spotifyApi = new SpotifyWebApi({
 
 var userId;
 
+// moodbox uses a naming convention to map playlists to presets
 var targetPlaylists = {
-  list: ['moodbox-ch0', 'moodbox-ch1', 'moodbox-ch2', 'moodbox-ch3', 'moodbox-ch4'],
-  lookup: {
-    'moodbox-ch0': false,
-    'moodbox-ch1': false,
-    'moodbox-ch2': false,
-    'moodbox-ch3': false,
-    'moodbox-ch4': false
-  }
+  list: ['moodbox-ch1', 'moodbox-ch2', 'moodbox-ch3', 'moodbox-ch4', 'moodbox-ch5'],
+  lookup: {}
 };
 
+// TODO: when should we use the snapshot id?
 var snapshotId;
 
 // Create the authorization URL
@@ -88,6 +84,11 @@ server.listen(port);
 
 function getAccessToken(code) {
 
+  // setup targetPlaylists
+  for (var i = 0, max = targetPlaylists.list.length; i < max; i++) {
+    targetPlaylists.lookup[targetPlaylists.list[i]] = false;
+  }
+
   // Retrieve an access token and a refresh token
   spotifyApi.authorizationCodeGrant(code)
     .then(function(data) {
@@ -110,11 +111,11 @@ function getAccessToken(code) {
       for (var i = 0, max = data.items.length; i < max; i++) { // loop thru the playlists
         playlistName = data.items[i].name;
         if (
-          playlistName == 'moodbox-ch0' ||
           playlistName == 'moodbox-ch1' ||
           playlistName == 'moodbox-ch2' ||
           playlistName == 'moodbox-ch3' ||
-          playlistName == 'moodbox-ch4'
+          playlistName == 'moodbox-ch4' ||
+          playlistName == 'moodbox-ch5'
           ) {
           targetPlaylists.lookup[playlistName] = data.items[i].id;
         }
@@ -150,7 +151,8 @@ var serviceStarted;
 function buildChannels() {
   if (!serviceStarted) {
     for (var i = 0; i < moods.length; i++) {
-      channels.push(new Channel(spotifyApi, userId, targetPlaylists, emitter, moods[i].name, i));
+      var index = i + 1;
+      channels.push(new Channel(spotifyApi, userId, targetPlaylists, emitter, moods[i].name, index));
       channels[channels.length - 1].init();
     }
   }
