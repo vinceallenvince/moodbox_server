@@ -35,7 +35,7 @@ Channel.prototype.init = function() {
 
   Q.fcall(this.artistMgr.getArtists.bind(this.artistMgr)).
   then(this.playlistMgr.createPlaylist.bind(this.playlistMgr)).
-  //then(this.trackMgr.addTracks.bind(this.trackMgr)).
+  then(this.trackMgr.addTracks.bind(this.trackMgr)).
   fail(this.fail.bind(this)).
   done();
 };
