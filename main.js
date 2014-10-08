@@ -1,4 +1,4 @@
-var config = require('src/config').config;
+var config = require('./src/config').config;
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
