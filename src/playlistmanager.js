@@ -9,7 +9,7 @@ var echo = echojs({
 });
 
 var TOTAL_ARTIST_RESULTS = 5;
-var TOTAL_PLAYLIST_RESULTS = 20; // Could adjust this based on bandwidth
+var TOTAL_PLAYLIST_RESULTS = 2; // TODO: Add to config file.
 
 /**
  * Creates a new PlaylistManager.
