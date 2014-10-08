@@ -54,23 +54,18 @@ app.get('/callback', function(req, res) {
 });
 
 /**
- * Player should pass a uri and playlist index
- * http://localhost:8888/shiftplaylist?uri=3MPqUOBndj5unD1dyvSO51&index=2
+ * Player should pass a uri and playlist channel
+ * http://localhost:8888/shiftplaylist?uri=3MPqUOBndj5unD1dyvSO51&channel=2
  */
 app.get('/shiftplaylist', function(req, res) {
 
   var uri = req.query.uri;
-  var index = req.query.index;
-  var playlistId = targetPlaylists.lookup[targetPlaylists.list[index - 1]];
+  var channel = req.query.channel; // channel from moodbox-ch1 thru 5
+  var playlistId = targetPlaylists.lookup[targetPlaylists.list[channel - 1]];
 
   if (uri.search('spotify:track:') == -1) {
     uri = 'spotify:track:' + uri;
   }
-
-  console.log(uri);
-  console.log(index);
-  console.log(playlistId);
-  console.log(targetPlaylists);
 
   spotifyApi.removeTracksFromPlaylist(userId, playlistId, [{'uri' : uri}])
     .then(function(response) {
