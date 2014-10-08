@@ -33,7 +33,6 @@ TrackManager.prototype.addTracks = function(data) {
  * @param  {Object} error  An error object.
  */
 TrackManager.prototype.handleError = function(deferred, error) {
-  console.log('TrackManager.prototype.handleError');
   deferred.reject(error);
 };
 exports.TrackManager = TrackManager
