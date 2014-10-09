@@ -54,7 +54,7 @@ app.get('/', function(req, res){
 
 app.get('/callback', function(req, res) {
 
-  res.render('callback', {pageTitle: 'MoodBox', messageA: 'You have successfully authorized your Mood Box.', messageB: 'Power it on to play music.'});
+  res.render('callback', {pageTitle: 'MoodBox', messageA: 'You have successfully setup your MoodBox.', messageB: 'Plug in and play music.'});
 
   // your application requests refresh and access tokens
   var code = req.query.code;
