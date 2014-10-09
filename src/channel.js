@@ -1,10 +1,11 @@
-var Q = require('q'),
+var config = require('./config').config,
+    Q = require('q'),
     ArtistManager = require('./artistmanager.js').ArtistManager,
     PlaylistManager = require('./playlistmanager.js').PlaylistManager,
     TrackManager = require('./trackmanager.js').TrackManager,
     moods = require('./moods').moods;
 
-var ARTIST_GENRE = 'blues';
+var ARTIST_GENRE = config.ARTIST_GENRE || 'blues';
 
 /**
  * Creates a new Channel.
