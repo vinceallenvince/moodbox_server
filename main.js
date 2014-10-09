@@ -49,12 +49,12 @@ app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
-  res.render('index', {pageTitle: 'Mood Box setup', authorizeURL: authorizeURL});
+  res.render('index', {pageTitle: 'MoodBox setup', authorizeURL: authorizeURL});
 });
 
 app.get('/callback', function(req, res) {
 
-  res.render('callback', {pageTitle: 'Mood Box', message: 'You have successfully authorized your Mood Box.'});
+  res.render('callback', {pageTitle: 'MoodBox', messageA: 'You have successfully authorized your Mood Box.', messageB: 'Power it on to play music.'});
 
   // your application requests refresh and access tokens
   var code = req.query.code;
